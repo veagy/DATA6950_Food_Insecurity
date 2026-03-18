@@ -1,2 +1,5 @@
+The dataset for this study was obtained from the USDA Economic Research Service (ERS) Food Access Research Atlas. It provides nationally representative, census-tract-level data on geographic and socioeconomic barriers to food access across the United States. The dataset includes demographic, income, and spatial accessibility indicators that can be used to identify communities at risk of limited access to affordable and nutritious food.
 
-The dataset was gotten from: https://www.ers.usda.gov/data-products/food-access-research-atlas/download-the-data
+For this analysis, we used three data releases from the years 2010, 2015, and 2019, which allowed us to examine changes in food access over nearly a decade while using consistent variable definitions and census-tract boundaries. By combining these three years, we increased the number of observations for modeling and captured variation in socioeconomic and geographic factors affecting food insecurity.
+
+The data can be accessed and downloaded here: https://www.ers.usda.gov/data-products/food-access-research-atlas/download-the-data
