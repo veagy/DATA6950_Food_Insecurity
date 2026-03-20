@@ -91,9 +91,77 @@ Train-Test Split
 The dataset was partitioned into training (80%) and testing (20%) subsets using stratified sampling to preserve class proportions. Additionally, 5-fold stratified cross-validation was employed during model evaluation to ensure robust and unbiased performance estimation.
 ### 3.3 Machine Learning Models
 To predict food insecurity across U.S. census tracts, three supervised classification algorithms were implemented: Logistic Regression, Random Forest, and XGBoost. These models were selected to balance interpretability and predictive performance, as well as to account for potential nonlinear relationships among socioeconomic and demographic predictors.
-Logistic Regression was used as a baseline model due to its simplicity and interpretability. It estimates the probability of a tract being classified as a food desert based on a linear combination of input features. Class weighting was applied to address the moderate imbalance in the target variable, and input features were standardized to ensure numerical stability and comparability.
-Random Forest serves as an ensemble tree-based method that enables the modeling of nonlinear relationships as well as high-order interactions between predictor variables. The model was developed using 300 decision trees which maintained a minimum leaf requirement of five samples to avoid overfitting problems. Class weights were balanced, and all available cores were used to speed up computation. The Random Forest model provides interpretable results through its feature importance measures which show the key factors that affect food desert classification.
-XGBoost (Extreme Gradient Boosting) was implemented as a high-performance gradient boosting algorithm optimized for classification tasks. Key hyperparameters included 300 estimators, a maximum tree depth of 5, a learning rate of 0.05, and subsampling of both observations and features. XGBoost was chosen for its ability to handle complex interactions, reduce bias, and improve predictive accuracy.
+## Logistic Regression
+
+Logistic Regression is used as a baseline model due to its simplicity and interpretability. It estimates the probability that a census tract is classified as a food desert using a linear combination of input features passed through a sigmoid (S-shaped) function.
+
+**Equation:**
+
+P(y = 1 | X) = 1 / (1 + e^-(β₀ + β₁x₁ + ... + βₚxₚ))
+
+Where:
+- P(y = 1 | X): Probability of being a food desert
+- x₁, x₂, ..., xₚ: Input features
+- β₀, β₁, ..., βₚ: Model coefficients
+
+The model outputs values between 0 and 1. A threshold (typically 0.5) is applied:
+- If probability ≥ 0.5 → Food Desert (1)
+- If probability < 0.5 → Not a Food Desert (0)
+
+**Model Improvements:**
+- Feature standardization to ensure consistent scale
+- Class weighting to handle imbalanced data
+
+## Random Forest
+
+Random Forest is an ensemble learning method that builds multiple decision trees using different subsets of the data and features. The final prediction is obtained by combining the outputs of all trees.
+
+**Equation:**
+
+ŷ = mode(T₁(X), T₂(X), ..., Tₙ(X))
+
+Where:
+- Tᵢ(X): Prediction from the i-th decision tree
+- ŷ: Final predicted class (majority vote)
+
+Each tree makes its own prediction, and the final result is determined by majority voting.
+
+**Model Configuration:**
+- 300 decision trees
+- Minimum leaf size: 5 samples
+- Balanced class weights
+- Parallel processing enabled
+
+**Advantages:**
+- Captures nonlinear relationships
+- Handles feature interactions
+- Provides feature importance scores
+
+## XGBoost (Gradient Boosting)
+
+XGBoost is a gradient boosting algorithm that builds decision trees sequentially. Each new tree focuses on correcting the errors made by previous trees.
+
+**Objective Function:**
+
+L = Σ l(yᵢ, ŷᵢ) + Σ Ω(fₖ)
+
+Where:
+- l(yᵢ, ŷᵢ): Loss function (prediction error)
+- Ω(fₖ): Regularization term to control model complexity
+
+Unlike Random Forest, XGBoost builds trees one after another, improving performance at each step.
+
+**Key Hyperparameters:**
+- 300 estimators
+- Maximum depth: 5
+- Learning rate: 0.05
+- Subsampling of rows and features
+
+**Advantages:**
+- High predictive accuracy
+- Handles complex patterns
+- Reduces overfitting through regularization
+
 All models were trained on the stratified training set, and performance was evaluated using 5-fold cross-validation with ROC-AUC as the primary metric. Final evaluation metrics, including precision, recall, F1-score, confusion matrices, and ROC curves, were computed on the held-out test set to assess generalization.
 ### 3.4 Model Evaluation and Interpretability
 Model performance was evaluated using multiple metrics to provide a comprehensive assessment of predictive accuracy and reliability. The primary metric was the Receiver Operating Characteristic – Area Under the Curve (ROC-AUC), which measures the model’s ability to distinguish between food desert and non–food desert tracts. ROC-AUC was chosen because it is robust to class imbalance and provides a threshold-independent evaluation. Additional metrics included precision, recall, F1-score, and confusion matrices, which offer insight into the models ability to correctly identify both positive and negative instances.
